@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+
+  bigdata:
+    build: ./big-data
+    container_name: big-data
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/src/notebooks
+      - ./data:/src/data
+      - ./output:/src/output
+    working_dir: /src
+    command: >
+      jupyter notebook
+      --ip=0.0.0.0
+      --port=8888
+      --no-browser
+      --allow-root
+    networks:
+      - big-data
+
+networks:
+  big-data:
+    driver: bridge
