@@ -1,9 +1,21 @@
-version: '3.8'
+version: "3.8"
 
 services:
 
+  postgres:
+    image: postgres:15
+    container_name: postgres-t3
+    environment:
+      POSTGRES_USER: tarea3
+      POSTGRES_PASSWORD: tarea3
+      POSTGRES_DB: tarea3
+    ports:
+      - "5432:5432"
+    networks:
+      - big-data
+
   bigdata:
-    build: ./big-data
+    build: .
     container_name: big-data
     ports:
       - "8888:8888"
@@ -12,6 +24,8 @@ services:
       - ./data:/src/data
       - ./output:/src/output
     working_dir: /src
+    depends_on:
+      - postgres
     command: >
       jupyter notebook
       --ip=0.0.0.0
